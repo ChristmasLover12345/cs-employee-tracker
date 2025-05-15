@@ -131,7 +131,7 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
                 {/* <Button variant="outline">Edit Profile</Button> */}
                 <Button
                     color="success"
-                    className={type === "Add" ? "flex items-center gap-1" : ""}
+                    className={type === "Add" ? "flex items-center gap-1 cursor-pointer" : "cursor-pointer"}
                     onClick={onOpenModal}
                 >
                     {type === "Add" ? <FaPlus className="mt-[0.2rem]" /> : "Edit"}
@@ -177,7 +177,7 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
                                 <Button
                                     variant={"outline"}
                                     className={cn(
-                                        "w-full justify-start text-left font-normal",
+                                        "w-full justify-start text-left font-normal cursor-pointer",
                                         !employeeToChange.hireDate && "text-muted-foreground"
                                     )}
                                 >
@@ -199,11 +199,12 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
                     </div>
                 </div>
                 <DialogFooter>
-                    <DialogClose asChild>
+                    <DialogClose className='cursor-pointer' asChild>
                         <Button
                             onClick={handleEmployee}
                             color="success"
                             disabled={disableBtn}
+                            className='cursor-pointer'
                         >
                             {type === "Add" ? "Add" : "Update"} Employee
                         </Button>

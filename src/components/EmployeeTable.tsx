@@ -40,12 +40,16 @@ const EmployeeTable = () => {
 
     // Updating sort functions
     const changeSortBy = (value: string) => {
-        if (value == "name" && sortBy == "name") {
-            setSortBy(`${value}-reverse`);
-        } else if (value == "hire-date" && sortBy == "hire-date") {
-            setSortBy(`${value}-reverse`);
+       if (value == "name") {
+            setSortBy(`${value}`);
+        } else if (value == "name-reverse") {
+            setSortBy(`${value}`);
+        } else if (value == "hire-date") {
+            setSortBy(`${value}`);
+        } else if (value == "hire-date-reverse")  {  
+            setSortBy(`${value}`)
         } else {
-            setSortBy(value);
+            setSortBy("name");
         }
 
         if (sortByJob) {
@@ -93,7 +97,7 @@ const EmployeeTable = () => {
 
     // Sorting the employees
     useEffect(() => {
-        const sortingEmployees = employees;
+        let sortingEmployees = [...employees];
 
         const handleSorting = () => {
             switch (sortBy) {
@@ -114,7 +118,7 @@ const EmployeeTable = () => {
                     );
                     break;
                 case "job-title":
-                    sortingEmployees.filter((employee: Employee) => employee.jobTitle == sortByJob);
+                     sortingEmployees = sortingEmployees.filter((employee: Employee) => employee.jobTitle == sortByJob);
                     break;
                 default:
                     sortingEmployees.sort((a: Employee, b: Employee) => a.id - b.id);
@@ -140,44 +144,53 @@ const EmployeeTable = () => {
                     <div className="flex items-center">
                         <p className="mr-2 text-sm text-gray-600">Sort by:</p>
 
-                        <DropdownMenu>
+                       <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="outline" className="text-sm text-gray-600">
+                                <Button variant="outline" className="text-sm text-gray-600 cursor-pointer">
                                     Name
                                     {sortBy === "name" ? <FaCaretDown className="ml-2" /> : sortBy === "name-reverse" ? <FaCaretUp className="ml-2" /> : ""}
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                                <DropdownMenuItem onClick={() => changeSortBy("name")}>A-Z</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => changeSortBy("name-reverse")}>Z-A</DropdownMenuItem>
+                                <DropdownMenuItem className='cursor-pointer' onClick={() => changeSortBy("name")}>A-Z</DropdownMenuItem>
+                                <DropdownMenuItem className='cursor-pointer' onClick={() => changeSortBy("name-reverse")}>Z-A</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="outline" className="text-sm text-gray-600">
+                                <Button variant="outline" className="text-sm text-gray-600 cursor-pointer">
                                     Hire date
                                     {sortBy === "hire-date" ? <FaCaretDown className="ml-2" /> : sortBy === "hire-date-reverse" ? <FaCaretUp className="ml-2" /> : ""}
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                                <DropdownMenuItem onClick={() => changeSortBy("hire-date")}>Newest First</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => changeSortBy("hire-date-reverse")}>Oldest First</DropdownMenuItem>
+                                <DropdownMenuItem className='cursor-pointer' onClick={() => changeSortBy("hire-date")}>Newest First</DropdownMenuItem>
+                                <DropdownMenuItem className='cursor-pointer' onClick={() => changeSortBy("hire-date-reverse")}>Oldest First</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        <select
-                            className="ml-3 text-sm border rounded p-1"
+
+                       
+
+
+
+                        <div className='cursor-pointer'>
+                            
+                            <select
+                            className="ml-3 text-sm border rounded p-1 cursor-pointer"
                             value={sortBy === "job-title" ? sortByJob : ""}
-                            onChange={changeSortByJob}
+                            onChange={(e) => changeSortByJob(e)}
                         >
-                            <option value="" disabled>
+                            <option value= "" disabled>
                                 Job title
                             </option>
-                            <option value="Customer Support">Customer Support</option>
-                            <option value="IT Support Specialist">IT Support Specialist</option>
-                            <option value="Software Engineer">Software Engineer</option>
+                            <option  value="Customer Support">Customer Support</option>
+                            <option  value="IT Support Specialist">IT Support Specialist</option>
+                            <option  value="Software Engineer">Software Engineer</option>
                         </select>
+                        </div>   
+                        
                     </div>
                 </div>
             </div>
