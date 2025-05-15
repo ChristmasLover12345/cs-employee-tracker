@@ -17,6 +17,8 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 // Valid values for type: "Add" & "Edit"
 const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Edit', employee: Employee | null, refreshEmployees: () => Promise<void> }) => {
 
+    const allowedTitles = ['Customer Support', 'IT Support Specialist', 'Software Engineer']
+
     // useStates
     const [openModal, setOpenModal] = useState(false);
     const [employeeToChange, setEmployeeToChange] = useState<Employee>({
@@ -29,9 +31,11 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
     const [token, setToken] = useState('');
 
     const disableBtn =
-        employeeToChange.name.trim() != "" ||
-        employeeToChange.jobTitle.trim() != "" &&
-        employeeToChange.hireDate != "";
+        employeeToChange.name.trim() == "" ||
+        employeeToChange.jobTitle.trim() == "" || 
+        employeeToChange.hireDate == "" ||
+        !allowedTitles.includes(employeeToChange.jobTitle) 
+        
 
     // Modal Functions
     const onOpenModal = () => {
