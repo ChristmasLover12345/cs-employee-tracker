@@ -1,31 +1,20 @@
 "use client";
 
-import { Employee } from "@/lib/interfaces/interfaces";
-import { deleteEmployee, getEmployees } from "@/lib/services/employee-service";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
-import { Button } from "./ui/button";
-import {
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  Table,
-  TableFooter,
-} from "./ui/table";
-import EmployeeModal from "./EmployeeModal";
-import { Pagination, PaginationContent } from "./ui/pagination";
+import { Employee } from '@/lib/interfaces/interfaces';
+import { deleteEmployee, getEmployees } from '@/lib/services/employee-service';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@radix-ui/react-dropdown-menu';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
+import { Button } from './ui/button';
+import { TableHeader, TableRow, TableHead, TableBody, TableCell, Table } from './ui/table';
+import EmployeeModal from './EmployeeModal';
+import { useAppContext } from '@/lib/context/context';
 
 const EmployeeTable = () => {
-  const { push } = useRouter();
+    const { push } = useRouter();
+
+    const { setEmployeeId } = useAppContext();
 
   // useStates
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -106,16 +95,22 @@ const EmployeeTable = () => {
     setSortByJob(e.target.value);
   };
 
-  // Delete employee
-  const handleDeleteEmployee = async (id: number) => {
-    try {
-      if (await deleteEmployee(token, id)) {
-        await handleGetEmployees();
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+    // Delete employee
+    const handleDeleteEmployee = async (id: number) => {
+        try {
+            if (await deleteEmployee(token, id)) {
+                await handleGetEmployees();
+            }
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
+
+    const handleViewEmployee = async (id: number) => {
+        await setEmployeeId(id);
+
+        push('/employee-page');
+    };
 
   // Getting the user token from storage
   useEffect(() => {
@@ -315,6 +310,9 @@ const EmployeeTable = () => {
                 <TableCell>{employee.jobTitle}</TableCell>
                 <TableCell>{employee.hireDate}</TableCell>
                 <TableCell className="flex gap-3 justify-end">
+                                    <Button onClick={() => handleViewEmployee(employee.id)}>
+                                        View
+                                    </Button>
                   <EmployeeModal
                     type="Edit"
                     employee={employee}
