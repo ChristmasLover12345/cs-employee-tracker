@@ -25,7 +25,7 @@ const LoginForm = () => {
     const changeUser = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUser({
             ...user,
-            [event.target.id]: '',
+            [event.target.id]: event.target.value,
         });
 
         if (loginError) {
@@ -121,6 +121,7 @@ const LoginForm = () => {
             <div className="flex items-center gap-2">
                 <Checkbox
                     id="remember"
+                    className='cursor-pointer'
                     checked={rememberMe}
                     onCheckedChange={(checked) => setRememberMe(Boolean(checked))}
                 />

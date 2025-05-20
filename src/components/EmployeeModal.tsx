@@ -17,6 +17,8 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 // Valid values for type: "Add" & "Edit"
 const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Edit', employee: Employee | null, refreshEmployees: () => Promise<void> }) => {
 
+    const allowedTitles = ['Customer Support', 'IT Support Specialist', 'Software Engineer']
+
     // useStates
     const [openModal, setOpenModal] = useState(false);
     const [employeeToChange, setEmployeeToChange] = useState<Employee>({
@@ -29,9 +31,11 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
     const [token, setToken] = useState('');
 
     const disableBtn =
-        employeeToChange.name.trim() != "" ||
-        employeeToChange.jobTitle.trim() != "" &&
-        employeeToChange.hireDate != "";
+        employeeToChange.name.trim() == "" ||
+        employeeToChange.jobTitle.trim() == "" || 
+        employeeToChange.hireDate == "" ||
+        !allowedTitles.includes(employeeToChange.jobTitle) 
+        
 
     // Modal Functions
     const onOpenModal = () => {
@@ -49,6 +53,13 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
 
     // Change employee functions
     const handleEmployeeToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmployeeToChange({
+            ...employeeToChange,
+            [e.target.id]: e.target.value,
+        });
+    };
+
+      const handleEmployeeToChangeTitle = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setEmployeeToChange({
             ...employeeToChange,
             [e.target.id]: e.target.value,
@@ -131,7 +142,7 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
                 {/* <Button variant="outline">Edit Profile</Button> */}
                 <Button
                     color="success"
-                    className={type === "Add" ? "flex items-center gap-1" : ""}
+                    className={type === "Add" ? "flex items-center gap-1 cursor-pointer" : "cursor-pointer"}
                     onClick={onOpenModal}
                 >
                     {type === "Add" ? <FaPlus className="mt-[0.2rem]" /> : "Edit"}
@@ -158,14 +169,21 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
                             />
                         </div>
                         <div>
-                            <div className="mb-2 block">
-                                <Label htmlFor="jobTitle">Job title</Label>
-                            </div>
-                            <Input
-                                id="jobTitle"
-                                value={employeeToChange.jobTitle}
-                                onChange={handleEmployeeToChange}
-                            />
+                        <select
+                            className="p-1 cursor-pointer file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+                            value={employeeToChange.jobTitle}
+                            onChange={handleEmployeeToChangeTitle}
+                            id="jobTitle"
+                        >
+                            <option value="" disabled>
+                            Job title
+                            </option>
+                            <option value="Customer Support">Customer Support</option>
+                            <option value="IT Support Specialist">
+                            IT Support Specialist
+                            </option>
+                            <option value="Software Engineer">Software Engineer</option>
+                        </select>
                         </div>
                     </div>
                     <div>
@@ -177,7 +195,7 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
                                 <Button
                                     variant={"outline"}
                                     className={cn(
-                                        "w-full justify-start text-left font-normal",
+                                        "w-full justify-start text-left font-normal cursor-pointer",
                                         !employeeToChange.hireDate && "text-muted-foreground"
                                     )}
                                 >
@@ -199,11 +217,12 @@ const EmployeeModal = ({ type, employee, refreshEmployees }: { type: 'Add' | 'Ed
                     </div>
                 </div>
                 <DialogFooter>
-                    <DialogClose asChild>
+                    <DialogClose className='cursor-pointer' asChild>
                         <Button
                             onClick={handleEmployee}
                             color="success"
                             disabled={disableBtn}
+                            className='cursor-pointer'
                         >
                             {type === "Add" ? "Add" : "Update"} Employee
                         </Button>
