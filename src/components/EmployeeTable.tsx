@@ -326,7 +326,7 @@ const EmployeeTable = () => {
                 <TableCell className="flex gap-3 justify-end">
                     <Button onClick={() => handleViewEmployee(employee.id)}>
                                         View
-                                    </Button>
+                    </Button>
                   <EmployeeModal
                     type="Edit"
                     employee={employee}

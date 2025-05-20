@@ -122,7 +122,7 @@ const LoginForm = () => {
                 <Checkbox
                     id="remember"
                     className='cursor-pointer'
-                    className='cursor-pointer'
+
                     checked={rememberMe}
                     onCheckedChange={(checked) => setRememberMe(Boolean(checked))}
                 />
