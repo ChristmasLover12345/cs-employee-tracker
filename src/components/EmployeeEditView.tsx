@@ -24,15 +24,16 @@ import { set } from "date-fns";
 const EmployeeEditView = ({
   employee,
   setEdit,
+  refreshEmployee,
 }: {
   employee: Employee;
   setEdit: (value: boolean) => void;
+  refreshEmployee: () => Promise<void>;
 }) => {
 
-  const { setEmployeeId } = useAppContext();
-
-  function refreshEmployees() {
-    setEmployeeId(employeeToChange.id);
+  const refreshEmployees = async () => {
+    await refreshEmployee();
+    setEdit(false);
 
 }
 
@@ -126,8 +127,7 @@ const EmployeeEditView = ({
     } catch (error) {
       console.log("error", error);
     }
-    console.log("made it")
-    setEdit(false);
+    // setEdit(false);
 
   };
 

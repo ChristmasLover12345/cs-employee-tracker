@@ -29,14 +29,15 @@ const page = () => {
         handleToken();
     }, []);
 
-    useEffect(() => {
-        const getEmployee = async () => {
+       const getEmployee = async () => {
             if (token != '') {
                 const tempEmployee = await getEmployeeById(token, employeeId);
                 if (tempEmployee)
                     setEmployee(tempEmployee);
             }
         }
+
+    useEffect(() => {
 
         if (employeeId != 0) {
             getEmployee();
@@ -56,7 +57,7 @@ const page = () => {
                     {
                         employee && (
                             isEditing ?
-                                <EmployeeEditView employee={employee} setEdit={setIsEditing} />
+                                <EmployeeEditView employee={employee} setEdit={setIsEditing} refreshEmployee={getEmployee} />
                                 :
                                 <EmployeeView employee={employee} setEdit={setIsEditing} />
                         )
