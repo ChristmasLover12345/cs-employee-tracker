@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "./ui/calendar";
 import { addEmployee, updateEmployee } from "@/lib/services/employee-service";
+import { useAppContext } from "@/lib/context/context";
+import { set } from "date-fns";
 
 const EmployeeEditView = ({
   employee,
@@ -26,6 +28,14 @@ const EmployeeEditView = ({
   employee: Employee;
   setEdit: (value: boolean) => void;
 }) => {
+
+  const { setEmployeeId } = useAppContext();
+
+  function refreshEmployees() {
+    setEmployeeId(employeeToChange.id);
+
+}
+
   const allowedTitles = [
     "Customer Support",
     "IT Support Specialist",
@@ -48,6 +58,7 @@ const EmployeeEditView = ({
     employeeToChange.name.trim() == "" ||
     employeeToChange.jobTitle.trim() == "" ||
     employeeToChange.hireDate == "" ||
+    employeeToChange.status?.trim() == "" ||
     !allowedTitles.includes(employeeToChange.jobTitle);
 
   // Change employee functions
@@ -111,9 +122,12 @@ const EmployeeEditView = ({
       }
 
       setEmployeeToChange(employee);
+      
     } catch (error) {
       console.log("error", error);
     }
+    setEdit(false);
+
   };
 
   useEffect(() => {
@@ -218,7 +232,7 @@ const EmployeeEditView = ({
       <div className="flex justify-between pt-4">
         <Button onClick={() => setEdit(false)}>Cancel</Button>
         {employee && (
-          <Button variant="outline" onClick={handleEmployee}>
+          <Button disabled={disableBtn} variant="outline" onClick={handleEmployee}>
             Save Edits
           </Button>
         )}
@@ -228,7 +242,3 @@ const EmployeeEditView = ({
 };
 
 export default EmployeeEditView;
-
-function refreshEmployees() {
-  throw new Error("Function not implemented.");
-}
