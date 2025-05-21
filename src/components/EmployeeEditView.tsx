@@ -17,7 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "./ui/calendar";
-import { addEmployee, updateEmployee } from "@/lib/services/employee-service";
+import { addEmployee, updateEmployee, updateEmployeeDetails } from "@/lib/services/employee-service";
 import { useAppContext } from "@/lib/context/context";
 import { set } from "date-fns";
 
@@ -117,7 +117,7 @@ const EmployeeEditView = ({
         jobTitle: employeeToChange.jobTitle.trim(),
       };
 
-      if (await updateEmployee(token, employeeWithChanges)) {
+      if (await updateEmployeeDetails(token, employeeWithChanges)) {
         await refreshEmployees();
       }
 
@@ -126,6 +126,7 @@ const EmployeeEditView = ({
     } catch (error) {
       console.log("error", error);
     }
+    console.log("made it")
     setEdit(false);
 
   };

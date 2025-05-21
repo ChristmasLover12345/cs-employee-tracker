@@ -54,7 +54,9 @@ const updateEmployee = async (token: string, employee: Employee) => {
     if (!response.ok) {
         const message = `An error has occurred ${response.status}`
         throw new Error(message);
+        
     }
+    
     return true;
 }
 
@@ -109,7 +111,6 @@ const getEmployeeById = async (token: string, id: number) => {
     if(!response.ok) return 'Not Authorized';
     
     const data = await response.json();
-    console.log(data);
     return data;
 }
 
