@@ -3,13 +3,15 @@
 import EmployeeEditView from '@/components/EmployeeEditView';
 import EmployeeView from '@/components/EmployeeView';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAppContext } from '@/lib/context/context'
 import { Employee } from '@/lib/interfaces/interfaces';
 import { getEmployeeById } from '@/lib/services/employee-service';
+import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const page = () => {
-    const { employeeId } = useAppContext();
+    const params = useParams();
+    const raw = params.employeeId
+    const employeeId = raw ? parseInt(raw as string) : 0;
 
     const [employee, setEmployee] = useState<Employee | null>(null);
     const [token, setToken] = useState('');
@@ -39,7 +41,7 @@ const page = () => {
 
     useEffect(() => {
 
-        if (employeeId != 0) {
+        if (token && employeeId) {
             getEmployee();
         }
     }, [token, employeeId])

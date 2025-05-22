@@ -22,12 +22,12 @@ import {
   TableFooter,
 } from "./ui/table";
 import EmployeeModal from "./EmployeeModal";
-import { useAppContext } from '@/lib/context/context';
+import { useAppContext } from "@/lib/context/context";
 
 const EmployeeTable = () => {
   const { push } = useRouter();
 
-    const { setEmployeeId } = useAppContext();
+  const { setEmployeeId } = useAppContext();
 
   // useStates
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -83,12 +83,9 @@ const EmployeeTable = () => {
     }
   };
 
-  
-    const handleViewEmployee = async (id: number) => {
-        await setEmployeeId(id);
-
-        push('/employee-page');
-    };
+  const handleViewEmployee = async (id: number) => {
+    push(`/employees/${id}`);
+  };
 
   // Updating sort functions
   const changeSortBy = (value: string) => {
@@ -324,9 +321,9 @@ const EmployeeTable = () => {
                 <TableCell>{employee.jobTitle}</TableCell>
                 <TableCell>{employee.hireDate}</TableCell>
                 <TableCell className="flex gap-3 justify-end">
-                    <Button onClick={() => handleViewEmployee(employee.id)}>
-                                        View
-                    </Button>
+                  <Button onClick={() => handleViewEmployee(employee.id)}>
+                    View
+                  </Button>
                   <EmployeeModal
                     type="Edit"
                     employee={employee}
