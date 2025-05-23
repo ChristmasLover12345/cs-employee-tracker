@@ -1,3 +1,7 @@
 ### Bug fixing assignment for CodeStack Academy students
 
-Remember to have fun :)
+Juan Heredia
+
+last revised: 5/23/2025
+
+
